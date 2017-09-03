@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  Study04
+//  Study05
 //
 //  Created by 常峻玮 on 17/9/3.
 //  Copyright © 2017年 Mingle. All rights reserved.
@@ -9,12 +9,13 @@
 #import "ViewController.h"
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
-
+#import <mach/mach_time.h>
 
 @interface ViewController ()
 
 @property (nonatomic, strong)EAGLContext *context;
 @property (nonatomic, assign)GLuint programHandle;
+@property (nonatomic, assign)GLKMatrix4 transformMatrix;
 
 @end
 
@@ -22,6 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.transformMatrix = GLKMatrix4Identity;
     [self configureContext];
     [self configureProgram];
 }
@@ -100,97 +102,45 @@
     glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (char *)triangleData);
     glVertexAttribPointer(colorAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (char *)triangleData + 3 * sizeof(GLfloat));
 }
-
 - (void)drawTriangle {
-    static GLfloat triangleData[18] = {
-        0,      0.5f,  0,  1,  0,  0, // x, y, z, r, g, b,每一行存储一个点的信息，位置和颜色
-        -0.5f, -0.5f,  0,  0,  1,  0,
-        0.5f,  -0.5f,  0,  0,  0,  1,
-    };
-    
-    [self bindAttribs:triangleData];
-    
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-}
-
-- (void)drawTriangleStrip {
-    static GLfloat triangleData[] = {
+    static GLfloat triangleData[36] = {
         0,      0.5f,  0,  1,  0,  0, // x, y, z, r, g, b,每一行存储一个点的信息，位置和颜色
         -0.5f,  0.0f,  0,  0,  1,  0,
         0.5f,   0.0f,  0,  0,  0,  1,
         0,      -0.5f,  0,  1,  0,  0,
-    };
-    [self bindAttribs:triangleData];
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-}
-
-- (void)drawTriangleFan {
-    static GLfloat triangleData[] = {
         -0.5f,  0.0f,  0,  0,  1,  0,
-        0,      0.5f,  0,  1,  0,  0,
         0.5f,   0.0f,  0,  0,  0,  1,
-        0,      -0.5f,  0,  1,  0,  0,
     };
+    
     [self bindAttribs:triangleData];
-    glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+    
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-- (void)drawLines {
-    static GLfloat lineData[] = {
-        0.0f,  0.0f,  0,  0,  1,  0,
-        0.5,   0.5f,  0,  1,  0,  0,
-        0.0f,  0.0f,  0,  0,  0,  1,
-        0.5,   -0.5f, 0,  1,  0,  0,
-    };
-    [self bindAttribs:lineData];
-    glLineWidth(5);
-    glDrawArrays(GL_LINES, 0, 4);
+- (void)update {
+    uint64_t nanos = mach_absolute_time ();
+    GLfloat seconds = (GLfloat)nanos / NSEC_PER_SEC * 10;
+    GLfloat varyingFactor = sin(seconds);
+    GLKMatrix4 scaleMatrix = GLKMatrix4MakeScale(varyingFactor, varyingFactor, 1.0);
+    GLKMatrix4 rotateMatrix = GLKMatrix4MakeRotation(varyingFactor, 0.0, 0.0, 1.0);
+    GLKMatrix4 translateMatrix = GLKMatrix4MakeTranslation(varyingFactor, 0.0, 0.0);
+    self.transformMatrix = GLKMatrix4Multiply(scaleMatrix, rotateMatrix);
+    self.transformMatrix = GLKMatrix4Multiply(self.transformMatrix, translateMatrix);
 }
-- (void)drawLinesStrip {
-    static GLfloat lineData[] = {
-        0.0f,  0.0f,  0,  0,  1,  0,
-        0.5,   0.5f,  0,  1,  0,  0,
-        0.5,   -0.5f, 0,  0,  0,  1,
-    };
-    [self bindAttribs:lineData];
-    glLineWidth(5);
-    glDrawArrays(GL_LINE_STRIP, 0, 3);
-}
-- (void)drawLinesLoop {
-    static GLfloat lineData[] = {
-        0.0f,  0.0f,  0,  0,  1,  0,
-        0.5,   0.5f,  0,  1,  0,  0,
-        0.5,   -0.5f, 0,  0,  0,  1,
-    };
-    [self bindAttribs:lineData];
-    glLineWidth(5);
-    glDrawArrays(GL_LINE_LOOP, 0, 3);
-}
-- (void)drawPoints {
-    static GLfloat lineData[] = {
-        0.0f,  0.0f,  0,  0,  1,  0,
-        0.5,   0.5f,  0,  1,  0,  0,
-        0.5,   -0.5f, 0,  0,  0,  1,
-    };
-    [self bindAttribs:lineData];
-    glDrawArrays(GL_POINTS, 0, 3);
-}
+
 #pragma mark - Delegate
 #pragma mark - GLKView Delegate
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
+    [self update];
     glClearColor(0.1, 0.2, 0.3, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(self.programHandle);
     
-//    [self drawTriangle];
-//    [self drawTriangleStrip];
-//    [self drawTriangleFan];
-//    [self drawLines];
-//    [self drawLinesStrip];
-//    [self drawLinesLoop];
-    [self drawPoints];
+    GLuint transformUniformLocation = glGetUniformLocation(self.programHandle, "transform");
+    glUniformMatrix4fv(transformUniformLocation, 1, 0, self.transformMatrix.m);
+    
+    [self drawTriangle];
 }
-
 #pragma mark - Configure
 - (void)configureContext {
     self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
