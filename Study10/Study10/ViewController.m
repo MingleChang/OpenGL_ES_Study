@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  Study09
+//  Study10
 //
 //  Created by mingle on 2017/9/5.
 //  Copyright © 2017年 mingle. All rights reserved.
@@ -22,6 +22,8 @@
 
 @property (nonatomic, assign)GLKVector3 lightDirection;
 
+@property (strong, nonatomic) GLKTextureInfo *diffuseTexture;
+
 @end
 
 @implementation ViewController
@@ -31,9 +33,15 @@
     [self configureMatrix];
     [self configureContext];
     [self configureProgram];
+    [self getTexture];
 }
 
 #pragma mark - Private
+- (void)getTexture {
+    NSString *lTexturePath = [[NSBundle mainBundle] pathForResource:@"texture" ofType:@"jpg"];
+    NSError *error;
+    self.diffuseTexture = [GLKTextureLoader textureWithContentsOfFile:lTexturePath options:nil error:&error];
+}
 - (const GLchar *)vertexSource {
     NSString *lVertexPath = [[NSBundle mainBundle] pathForResource:@"vertex" ofType:@"glsl"];
     NSString *lVertexText = [NSString stringWithContentsOfFile:lVertexPath encoding:NSUTF8StringEncoding error:nil];
@@ -101,77 +109,77 @@
 - (void)bindAttribs:(GLfloat *)triangleData {
     GLuint positionAttribLocation = glGetAttribLocation(self.programHandle, "position");
     glEnableVertexAttribArray(positionAttribLocation);
-    GLuint colorAttribLocation = glGetAttribLocation(self.programHandle, "color");
-    glEnableVertexAttribArray(colorAttribLocation);
     GLuint normalAttribLocation = glGetAttribLocation(self.programHandle, "normal");
     glEnableVertexAttribArray(normalAttribLocation);
+    GLuint uvAttribLocation = glGetAttribLocation(self.programHandle, "uv");
+    glEnableVertexAttribArray(uvAttribLocation);
     
-    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (char *)triangleData);
-    glVertexAttribPointer(colorAttribLocation, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (char *)triangleData + 3 * sizeof(GLfloat));
-    glVertexAttribPointer(normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(GLfloat), (char *)triangleData + 6 * sizeof(GLfloat));
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (char *)triangleData);
+    glVertexAttribPointer(normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (char *)triangleData + 3 * sizeof(GLfloat));
+    glVertexAttribPointer(uvAttribLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (char *)triangleData + 6 * sizeof(GLfloat));
 }
 
 - (void)drawXPlanes {
     static GLfloat triangleData[] = {
         //X轴处于0.5f平面
-        0.5f,  0.5f,  0.5f, 1, 0, 0, 1, 0, 0,
-        0.5f, -0.5f, -0.5f, 1, 0, 0, 1, 0, 0,
-        0.5f, -0.5f,  0.5f, 1, 0, 0, 1, 0, 0,
-        0.5f,  0.5f,  0.5f, 1, 0, 0, 1, 0, 0,
-        0.5f, -0.5f, -0.5f, 1, 0, 0, 1, 0, 0,
-        0.5f,  0.5f, -0.5f, 1, 0, 0, 1, 0, 0,
+        0.5f,  0.5f,  0.5f, 1, 0, 0, 1, 0,
+        0.5f, -0.5f, -0.5f, 1, 0, 0, 0, 1,
+        0.5f, -0.5f,  0.5f, 1, 0, 0, 0, 0,
+        0.5f,  0.5f,  0.5f, 1, 0, 0, 1, 0,
+        0.5f, -0.5f, -0.5f, 1, 0, 0, 0, 1,
+        0.5f,  0.5f, -0.5f, 1, 0, 0, 1, 1,
         //X轴处于-0.5f平面
-        -0.5f,  0.5f,  0.5f, 1, 0, 0, -1, 0, 0,
-        -0.5f, -0.5f, -0.5f, 1, 0, 0, -1, 0, 0,
-        -0.5f, -0.5f,  0.5f, 1, 0, 0, -1, 0, 0,
-        -0.5f,  0.5f,  0.5f, 1, 0, 0, -1, 0, 0,
-        -0.5f, -0.5f, -0.5f, 1, 0, 0, -1, 0, 0,
-        -0.5f,  0.5f, -0.5f, 1, 0, 0, -1, 0, 0,
+        -0.5f,  0.5f,  0.5f, -1, 0, 0, 1, 0,
+        -0.5f, -0.5f, -0.5f, -1, 0, 0, 0, 1,
+        -0.5f, -0.5f,  0.5f, -1, 0, 0, 0, 0,
+        -0.5f,  0.5f,  0.5f, -1, 0, 0, 1, 0,
+        -0.5f, -0.5f, -0.5f, -1, 0, 0, 0, 1,
+        -0.5f,  0.5f, -0.5f, -1, 0, 0, 1, 1,
     };
     [self bindAttribs:triangleData];
-    glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / 9);
+    glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / 8);
 }
 
 - (void)drawYPlanes {
     static GLfloat triangleData[] = {
         //Y轴处于0.5f平面
-         0.5f, 0.5f,  0.5f, 0, 1, 0, 0, 1, 0,
-        -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1, 0,
-         0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1, 0,
-         0.5f, 0.5f,  0.5f, 0, 1, 0, 0, 1, 0,
-        -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1, 0,
-        -0.5f, 0.5f,  0.5f, 0, 1, 0, 0, 1, 0,
+         0.5f, 0.5f,  0.5f, 0, 1, 0, 1, 0,
+        -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1,
+         0.5f, 0.5f, -0.5f, 0, 1, 0, 1, 1,
+         0.5f, 0.5f,  0.5f, 0, 1, 0, 1, 0,
+        -0.5f, 0.5f, -0.5f, 0, 1, 0, 0, 1,
+        -0.5f, 0.5f,  0.5f, 0, 1, 0, 0, 0,
         //Y轴处于-0.5f平面
-         0.5f, -0.5f,  0.5f, 0, 1, 0, 0, -1, 0,
-        -0.5f, -0.5f, -0.5f, 0, 1, 0, 0, -1, 0,
-         0.5f, -0.5f, -0.5f, 0, 1, 0, 0, -1, 0,
-         0.5f, -0.5f,  0.5f, 0, 1, 0, 0, -1, 0,
-        -0.5f, -0.5f, -0.5f, 0, 1, 0, 0, -1, 0,
-        -0.5f, -0.5f,  0.5f, 0, 1, 0, 0, -1, 0,
+         0.5f, -0.5f,  0.5f, 0, -1, 0, 1, 0,
+        -0.5f, -0.5f, -0.5f, 0, -1, 0, 0, 1,
+         0.5f, -0.5f, -0.5f, 0, -1, 0, 1, 1,
+         0.5f, -0.5f,  0.5f, 0, -1, 0, 1, 0,
+        -0.5f, -0.5f, -0.5f, 0, -1, 0, 0, 1,
+        -0.5f, -0.5f,  0.5f, 0, -1, 0, 0, 0,
     };
     [self bindAttribs:triangleData];
-    glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / 9);
+    glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / 8);
 }
 
 - (void)drawZPlanes {
     static GLfloat triangleData[] = {
         //Z轴处于0.5f平面
-        -0.5f,  0.5f, 0.5f, 0, 0, 1, 0, 0, 1,
-        -0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 0, 1,
-         0.5f,  0.5f, 0.5f, 0, 0, 1, 0, 0, 1,
-        -0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 0, 1,
-         0.5f,  0.5f, 0.5f, 0, 0, 1, 0, 0, 1,
-         0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 0, 1,
+        -0.5f,  0.5f, 0.5f, 0, 0, 1, 0, 0,
+        -0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 1,
+         0.5f,  0.5f, 0.5f, 0, 0, 1, 1, 0,
+        -0.5f, -0.5f, 0.5f, 0, 0, 1, 0, 1,
+         0.5f,  0.5f, 0.5f, 0, 0, 1, 1, 0,
+         0.5f, -0.5f, 0.5f, 0, 0, 1, 1, 1,
         //Z轴处于-0.5f平面
-        -0.5f,  0.5f, -0.5f, 0, 0, 1, 0, 0, -1,
-        -0.5f, -0.5f, -0.5f, 0, 0, 1, 0, 0, -1,
-         0.5f,  0.5f, -0.5f, 0, 0, 1, 0, 0, -1,
-        -0.5f, -0.5f, -0.5f, 0, 0, 1, 0, 0, -1,
-         0.5f,  0.5f, -0.5f, 0, 0, 1, 0, 0, -1,
-         0.5f, -0.5f, -0.5f, 0, 0, 1, 0, 0, -1,
+        -0.5f,  0.5f, -0.5f, 0, 0, -1, 0, 0,
+        -0.5f, -0.5f, -0.5f, 0, 0, -1, 0, 1,
+         0.5f,  0.5f, -0.5f, 0, 0, -1, 1, 0,
+        -0.5f, -0.5f, -0.5f, 0, 0, -1, 0, 1,
+         0.5f,  0.5f, -0.5f, 0, 0, -1, 1, 0,
+         0.5f, -0.5f, -0.5f, 0, 0, -1, 1, 1,
     };
     [self bindAttribs:triangleData];
-    glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / 9);
+    glDrawArrays(GL_TRIANGLES, 0, sizeof(triangleData) / 8);
 }
 - (void)drawCube {
     [self drawXPlanes];
@@ -215,6 +223,11 @@
     
     GLuint lightDirectionUniformLocation = glGetUniformLocation(self.programHandle, "lightDirection");
     glUniform3fv(lightDirectionUniformLocation, 1, self.lightDirection.v);
+    
+    GLuint diffuseMapUniformLocation = glGetUniformLocation(self.programHandle, "diffuseMap");
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, self.diffuseTexture.name);
+    glUniform1i(diffuseMapUniformLocation, 0);
     
     [self drawCube];
 }
