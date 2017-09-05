@@ -1,9 +1,9 @@
 //
 //  ViewController.m
-//  Study05
+//  Study06
 //
-//  Created by 常峻玮 on 17/9/3.
-//  Copyright © 2017年 Mingle. All rights reserved.
+//  Created by mingle on 2017/9/5.
+//  Copyright © 2017年 mingle. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -104,12 +104,12 @@
 }
 - (void)drawTriangle {
     static GLfloat triangleData[36] = {
-        0,      0.5f,  0,  1,  0,  0, // x, y, z, r, g, b,每一行存储一个点的信息，位置和颜色
-        -0.5f,  0.0f,  0,  0,  1,  0,
-        0.5f,   0.0f,  0,  0,  0,  1,
-        0,      -0.5f,  0,  1,  0,  0,
-        -0.5f,  0.0f,  0,  0,  1,  0,
-        0.5f,   0.0f,  0,  0,  0,  1,
+        -0.5,    0.5f,  0,  1,  0,  0, // x, y, z, r, g, b,每一行存储一个点的信息，位置和颜色
+        -0.5f,  -0.5f,  0,  0,  1,  0,
+        0.5f,   0.5f,  0,  0,  0,  1,
+        0.5,    0.5f,  0,  0,  0,  1,
+        -0.5f,  -0.5f,  0,  0,  1,  0,
+        0.5f,  -0.5f,  0,  0,  0,  1,
     };
     
     [self bindAttribs:triangleData];
@@ -120,12 +120,25 @@
 - (void)update {
     uint64_t nanos = mach_absolute_time ();
     GLfloat seconds = (GLfloat)nanos / NSEC_PER_SEC * 10;
-    GLfloat varyingFactor = sin(seconds);
-    GLKMatrix4 scaleMatrix = GLKMatrix4MakeScale(varyingFactor, varyingFactor, 1.0);
-    GLKMatrix4 rotateMatrix = GLKMatrix4MakeRotation(varyingFactor, 0.0, 0.0, 1.0);
-    GLKMatrix4 translateMatrix = GLKMatrix4MakeTranslation(varyingFactor, 0.0, 0.0);
+    GLfloat varyingFactor = seconds;
+    
+    GLKMatrix4 rotateMatrix = GLKMatrix4MakeRotation(varyingFactor, 0, 1, 0);
+    
+#define UsePerspective
+#ifdef UsePerspective
+    GLfloat aspect = self.view.frame.size.width / self.view.frame.size.height;
+    GLKMatrix4 perspectiveMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(90), aspect, 0.1, 10.0);
+    GLKMatrix4 translateMatrix = GLKMatrix4MakeTranslation(0, 0, -1.6);
+    self.transformMatrix = GLKMatrix4Multiply(translateMatrix, rotateMatrix);
+    self.transformMatrix = GLKMatrix4Multiply(perspectiveMatrix, self.transformMatrix);
+#else
+    GLfloat viewWidth = self.view.frame.size.width;
+    GLfloat viewHeight = self.view.frame.size.height;
+    GLKMatrix4 orthMatrix = GLKMatrix4MakeOrtho(-viewWidth/2, viewWidth/2, -viewHeight/2, viewHeight/2, -10, 10);
+    GLKMatrix4 scaleMatrix = GLKMatrix4MakeScale(200, 200, 200);
     self.transformMatrix = GLKMatrix4Multiply(scaleMatrix, rotateMatrix);
-    self.transformMatrix = GLKMatrix4Multiply(self.transformMatrix, translateMatrix);
+    self.transformMatrix = GLKMatrix4Multiply(orthMatrix, self.transformMatrix);
+#endif
 }
 
 #pragma mark - Delegate

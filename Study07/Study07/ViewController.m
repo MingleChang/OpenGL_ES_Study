@@ -1,9 +1,9 @@
 //
 //  ViewController.m
-//  Study05
+//  Study07
 //
-//  Created by 常峻玮 on 17/9/3.
-//  Copyright © 2017年 Mingle. All rights reserved.
+//  Created by mingle on 2017/9/5.
+//  Copyright © 2017年 mingle. All rights reserved.
 //
 
 #import "ViewController.h"
@@ -15,7 +15,11 @@
 
 @property (nonatomic, strong)EAGLContext *context;
 @property (nonatomic, assign)GLuint programHandle;
-@property (nonatomic, assign)GLKMatrix4 transformMatrix;
+
+@property (nonatomic, assign)GLKMatrix4 projectionMatrix;
+@property (nonatomic, assign)GLKMatrix4 cameraMatrix;
+@property (nonatomic, assign)GLKMatrix4 modelMatrix1;
+@property (nonatomic, assign)GLKMatrix4 modelMatrix2;
 
 @end
 
@@ -23,7 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.transformMatrix = GLKMatrix4Identity;
+    [self configureMatrix];
     [self configureContext];
     [self configureProgram];
 }
@@ -102,14 +106,14 @@
     glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (char *)triangleData);
     glVertexAttribPointer(colorAttribLocation, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (char *)triangleData + 3 * sizeof(GLfloat));
 }
-- (void)drawTriangle {
+- (void)drawRectangle {
     static GLfloat triangleData[36] = {
-        0,      0.5f,  0,  1,  0,  0, // x, y, z, r, g, b,每一行存储一个点的信息，位置和颜色
-        -0.5f,  0.0f,  0,  0,  1,  0,
-        0.5f,   0.0f,  0,  0,  0,  1,
-        0,      -0.5f,  0,  1,  0,  0,
-        -0.5f,  0.0f,  0,  0,  1,  0,
-        0.5f,   0.0f,  0,  0,  0,  1,
+        -0.5,    0.5f,  0,  1,  0,  0, // x, y, z, r, g, b,每一行存储一个点的信息，位置和颜色
+        -0.5f,  -0.5f,  0,  0,  1,  0,
+        0.5f,   0.5f,  0,  0,  0,  1,
+        0.5,    0.5f,  0,  0,  0,  1,
+        -0.5f,  -0.5f,  0,  0,  1,  0,
+        0.5f,  -0.5f,  0,  0,  0,  1,
     };
     
     [self bindAttribs:triangleData];
@@ -120,12 +124,15 @@
 - (void)update {
     uint64_t nanos = mach_absolute_time ();
     GLfloat seconds = (GLfloat)nanos / NSEC_PER_SEC * 10;
-    GLfloat varyingFactor = sin(seconds);
-    GLKMatrix4 scaleMatrix = GLKMatrix4MakeScale(varyingFactor, varyingFactor, 1.0);
-    GLKMatrix4 rotateMatrix = GLKMatrix4MakeRotation(varyingFactor, 0.0, 0.0, 1.0);
-    GLKMatrix4 translateMatrix = GLKMatrix4MakeTranslation(varyingFactor, 0.0, 0.0);
-    self.transformMatrix = GLKMatrix4Multiply(scaleMatrix, rotateMatrix);
-    self.transformMatrix = GLKMatrix4Multiply(self.transformMatrix, translateMatrix);
+    GLfloat varyingFactor = (sin(seconds) + 1) / 2.0;;
+    self.cameraMatrix = GLKMatrix4MakeLookAt(0, 0, 2 * (varyingFactor + 1), 0, 0, 0, 0, 1, 0);
+    GLKMatrix4 translateMatrix1 = GLKMatrix4MakeTranslation(-0.7, 0, 0);
+    GLKMatrix4 rotateMatrix1 = GLKMatrix4MakeRotation(varyingFactor * M_PI * 2, 0, 1, 0);
+    self.modelMatrix1 = GLKMatrix4Multiply(translateMatrix1, rotateMatrix1);
+    
+    GLKMatrix4 translateMatrix2 = GLKMatrix4MakeTranslation(0.7, 0, 0);
+    GLKMatrix4 rotateMatrix2 = GLKMatrix4MakeRotation(varyingFactor * M_PI, 0, 0, 1);
+    self.modelMatrix2 = GLKMatrix4Multiply(translateMatrix2, rotateMatrix2);
 }
 
 #pragma mark - Delegate
@@ -135,12 +142,32 @@
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(self.programHandle);
     
-    GLuint transformUniformLocation = glGetUniformLocation(self.programHandle, "transform");
-    glUniformMatrix4fv(transformUniformLocation, 1, 0, self.transformMatrix.m);
+    GLuint projectionMatrixUniformLocation = glGetUniformLocation(self.programHandle, "projectionMatrix");
+    glUniformMatrix4fv(projectionMatrixUniformLocation, 1, 0, self.projectionMatrix.m);
     
-    [self drawTriangle];
+    GLuint cameraMatrixUniformLocation = glGetUniformLocation(self.programHandle, "cameraMatrix");
+    glUniformMatrix4fv(cameraMatrixUniformLocation, 1, 0, self.cameraMatrix.m);
+    
+    GLuint modelMatrixUniformLocation = glGetUniformLocation(self.programHandle, "modelMatrix");
+    glUniformMatrix4fv(modelMatrixUniformLocation, 1, 0, self.modelMatrix1.m);
+    [self drawRectangle];
+    
+    glUniformMatrix4fv(modelMatrixUniformLocation, 1, 0, self.modelMatrix2.m);
+    [self drawRectangle];
 }
 #pragma mark - Configure
+- (void)configureMatrix {
+    //使用透视投影矩阵
+    GLfloat aspect = self.view.frame.size.width / self.view.frame.size.height;
+    self.projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(90), aspect, 0.1, 100.0);
+    
+    //设置摄像机在 0，0，2 坐标，看向 0，0，0点。Y轴正向为摄像机顶部指向的方向
+    self.cameraMatrix = GLKMatrix4MakeLookAt(0, 0, 2, 0, 0, 0, 0, 1, 0);
+    //先初始化矩形1的模型矩阵为单位矩阵
+    self.modelMatrix1 = GLKMatrix4Identity;
+    //先初始化矩形2的模型矩阵为单位矩阵
+    self.modelMatrix2 = GLKMatrix4Identity;
+}
 - (void)configureContext {
     self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
     if (!self.context) {
