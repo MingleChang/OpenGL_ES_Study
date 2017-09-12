@@ -6,10 +6,9 @@
 //  Copyright © 2017年 mingle. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <GLKit/GLKit.h>
+#import "GLBaseViewController.h"
 
-@interface ViewController : GLKViewController
+@interface ViewController : GLBaseViewController
 
 
 @end
