@@ -17,6 +17,7 @@
 		821F2E961F666E0C009A5B5E /* fragment.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 821F2E941F666E0C009A5B5E /* fragment.glsl */; };
 		821F2E971F666E0C009A5B5E /* vertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 821F2E951F666E0C009A5B5E /* vertex.glsl */; };
 		821F2E991F666ED0009A5B5E /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 821F2E981F666ED0009A5B5E /* texture.jpg */; };
+		825990CF1F691AF300C76E10 /* Laser.m in Sources */ = {isa = PBXBuildFile; fileRef = 825990CE1F691AF300C76E10 /* Laser.m */; };
 		82D5BE471F67BA2200EB68DE /* GLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 82D5BE461F67BA2200EB68DE /* GLContext.m */; };
 		82D5BE4D1F67CDAD00EB68DE /* GLBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82D5BE4C1F67CDAD00EB68DE /* GLBaseViewController.m */; };
 		82D5BE4F1F67D96500EB68DE /* laser.png in Resources */ = {isa = PBXBuildFile; fileRef = 82D5BE4E1F67D96500EB68DE /* laser.png */; };
@@ -37,6 +38,8 @@
 		821F2E941F666E0C009A5B5E /* fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = fragment.glsl; sourceTree = "<group>"; };
 		821F2E951F666E0C009A5B5E /* vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vertex.glsl; sourceTree = "<group>"; };
 		821F2E981F666ED0009A5B5E /* texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = texture.jpg; sourceTree = "<group>"; };
+		825990CD1F691AF300C76E10 /* Laser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Laser.h; sourceTree = "<group>"; };
+		825990CE1F691AF300C76E10 /* Laser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Laser.m; sourceTree = "<group>"; };
 		82D5BE451F67BA2100EB68DE /* GLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLContext.h; sourceTree = "<group>"; };
 		82D5BE461F67BA2200EB68DE /* GLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLContext.m; sourceTree = "<group>"; };
 		82D5BE4B1F67CDAD00EB68DE /* GLBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLBaseViewController.h; sourceTree = "<group>"; };
@@ -117,6 +120,8 @@
 			children = (
 				82D5BE451F67BA2100EB68DE /* GLContext.h */,
 				82D5BE461F67BA2200EB68DE /* GLContext.m */,
+				825990CD1F691AF300C76E10 /* Laser.h */,
+				825990CE1F691AF300C76E10 /* Laser.m */,
 			);
 			path = GL;
 			sourceTree = "<group>";
@@ -202,6 +207,7 @@
 				821F2E931F666D28009A5B5E /* ViewController.m in Sources */,
 				821F2E911F666D28009A5B5E /* main.m in Sources */,
 				82D5BE471F67BA2200EB68DE /* GLContext.m in Sources */,
+				825990CF1F691AF300C76E10 /* Laser.m in Sources */,
 				82D5BE4D1F67CDAD00EB68DE /* GLBaseViewController.m in Sources */,
 				821F2E8D1F666D28009A5B5E /* AppDelegate.m in Sources */,
 			);

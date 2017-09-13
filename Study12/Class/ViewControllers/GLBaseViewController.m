@@ -40,7 +40,7 @@
 #pragma mark - Delegate
 #pragma mark - GLKView Delegate
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-    glClearColor(1.0, 1.0, 1.0, 1.0);
+    glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     [self.glContext active];
@@ -63,6 +63,8 @@
     
     // 设置OpenGL状态
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_DST_ALPHA);
 }
 
 - (void)configureGLContext {
