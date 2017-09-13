@@ -15,6 +15,8 @@
 
 - (void)active;
 
+- (void)bindAttribs:(CGFloat *)triangleData;
+
 //drawTriangles
 - (void)drawTriangles:(GLfloat *)triangleData vertexCount:(GLsizei)vertexCount;
 

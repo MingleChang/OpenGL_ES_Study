@@ -38,6 +38,19 @@
     glUseProgram(self.program);
 }
 
+- (void)bindAttribs:(CGFloat *)triangleData {
+    GLuint positionAttribLocation = glGetAttribLocation(self.program, "position");
+    glEnableVertexAttribArray(positionAttribLocation);
+    GLuint normalAttribLocation = glGetAttribLocation(self.program, "normal");
+    glEnableVertexAttribArray(normalAttribLocation);
+    GLuint uvAttribLocation = glGetAttribLocation(self.program, "uv");
+    glEnableVertexAttribArray(uvAttribLocation);
+    
+    glVertexAttribPointer(positionAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (char *)triangleData);
+    glVertexAttribPointer(normalAttribLocation, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (char *)triangleData + 3 * sizeof(GLfloat));
+    glVertexAttribPointer(uvAttribLocation, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (char *)triangleData + 6 * sizeof(GLfloat));
+}
+
 - (void)drawTriangles:(GLfloat *)triangleData vertexCount:(GLsizei)vertexCount {
     GLuint positionAttribLocation = glGetAttribLocation(self.program, "position");
     glEnableVertexAttribArray(positionAttribLocation);
