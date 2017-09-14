@@ -7,6 +7,7 @@
 //
 
 #import <GLKit/GLKit.h>
+#import <OpenGLES/ES2/glext.h>
 
 @interface GLContext : NSObject
 
@@ -14,9 +15,12 @@
 + (GLContext *)contextWithVertexShaderPath:(NSString *)vertexShaderPath fragmentShaderPath:(NSString *)fragmentShaderPath;
 
 - (void)active;
+- (void)bindAttribs:(CGFloat *)triangleData;
 
 //drawTriangles
 - (void)drawTriangles:(GLfloat *)triangleData vertexCount:(GLsizei)vertexCount;
+- (void)drawTrianglesWithVBO:(GLuint)vbo vertexCount:(GLint)vertexCount;
+- (void)drawTrianglesWithVAO:(GLuint)vao vertexCount:(GLint)vertexCount;
 
 //set Uniform
 - (void)setUniform1i:(NSString *)uniformName value:(GLint)value;
