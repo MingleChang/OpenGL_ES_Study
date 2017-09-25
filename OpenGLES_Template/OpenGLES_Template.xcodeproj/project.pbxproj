@@ -20,6 +20,7 @@
 		827119E61F6A1B000099DE97 /* GLObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 827119E51F6A1B000099DE97 /* GLObject.m */; };
 		82D5BE471F67BA2200EB68DE /* GLContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 82D5BE461F67BA2200EB68DE /* GLContext.m */; };
 		82D5BE4D1F67CDAD00EB68DE /* GLBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 82D5BE4C1F67CDAD00EB68DE /* GLBaseViewController.m */; };
+		82FDD5181F78F5C700795322 /* GLGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = 82FDD5171F78F5C700795322 /* GLGeometry.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,8 @@
 		82D5BE461F67BA2200EB68DE /* GLContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLContext.m; sourceTree = "<group>"; };
 		82D5BE4B1F67CDAD00EB68DE /* GLBaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLBaseViewController.h; sourceTree = "<group>"; };
 		82D5BE4C1F67CDAD00EB68DE /* GLBaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLBaseViewController.m; sourceTree = "<group>"; };
+		82FDD5161F78F5C600795322 /* GLGeometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLGeometry.h; sourceTree = "<group>"; };
+		82FDD5171F78F5C700795322 /* GLGeometry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLGeometry.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +119,8 @@
 				82D5BE461F67BA2200EB68DE /* GLContext.m */,
 				827119E41F6A1B000099DE97 /* GLObject.h */,
 				827119E51F6A1B000099DE97 /* GLObject.m */,
+				82FDD5161F78F5C600795322 /* GLGeometry.h */,
+				82FDD5171F78F5C700795322 /* GLGeometry.m */,
 			);
 			path = GL;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 				821F2E931F666D28009A5B5E /* ViewController.m in Sources */,
 				821F2E911F666D28009A5B5E /* main.m in Sources */,
 				82D5BE471F67BA2200EB68DE /* GLContext.m in Sources */,
+				82FDD5181F78F5C700795322 /* GLGeometry.m in Sources */,
 				82D5BE4D1F67CDAD00EB68DE /* GLBaseViewController.m in Sources */,
 				821F2E8D1F666D28009A5B5E /* AppDelegate.m in Sources */,
 				827119E61F6A1B000099DE97 /* GLObject.m in Sources */,
