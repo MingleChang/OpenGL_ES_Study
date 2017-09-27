@@ -69,9 +69,6 @@
 
 - (void)configureTerrain {
     self.objects = [NSMutableArray array];
-    NSString *vertexShaderPath = [[NSBundle mainBundle] pathForResource:@"vertex" ofType:@"glsl"];
-    NSString *fragmentShaderPath = [[NSBundle mainBundle] pathForResource:@"fragment_terrain" ofType:@"glsl"];
-    GLContext *terrainContext = [GLContext contextWithVertexShaderPath:vertexShaderPath fragmentShaderPath:fragmentShaderPath];
     
     GLKTextureInfo *grass = [GLKTextureLoader textureWithCGImage:[UIImage imageNamed:@"grass_01.jpg"].CGImage options:nil error:nil];
     NSError *error;
@@ -86,7 +83,7 @@
     
     
     UIImage *heightMap = [UIImage imageNamed:@"terrain_01.jpg"];
-    Terrain *terrain = [[Terrain alloc] initWithGLContext:terrainContext heightMap:heightMap size:CGSizeMake(500, 500) height:100 grass:grass dirt:dirt];
+    Terrain *terrain = [[Terrain alloc] initWithGLContext:self.glContext heightMap:heightMap size:CGSizeMake(500, 500) height:100 grass:grass dirt:dirt];
     terrain.modelMatrix = GLKMatrix4MakeTranslation(-250, 0, -250);
     [self.objects addObject:terrain];
 }

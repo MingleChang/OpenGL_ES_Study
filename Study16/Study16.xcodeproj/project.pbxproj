@@ -18,7 +18,6 @@
 		821F2E971F666E0C009A5B5E /* vertex.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 821F2E951F666E0C009A5B5E /* vertex.glsl */; };
 		821F2E991F666ED0009A5B5E /* texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 821F2E981F666ED0009A5B5E /* texture.jpg */; };
 		824D97B41F7A2B9A00E84D4C /* Terrain.m in Sources */ = {isa = PBXBuildFile; fileRef = 824D97B31F7A2B9A00E84D4C /* Terrain.m */; };
-		826B15771F7B475B00FA9E48 /* fragment_terrain.glsl in Resources */ = {isa = PBXBuildFile; fileRef = 826B15761F7B475B00FA9E48 /* fragment_terrain.glsl */; };
 		826B15781F7B4A1E00FA9E48 /* terrain_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 824D97B11F7A2AC200E84D4C /* terrain_01.jpg */; };
 		826B15791F7B4A2100FA9E48 /* grass_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 824D97B01F7A2AC200E84D4C /* grass_01.jpg */; };
 		826B157A1F7B4A2600FA9E48 /* dirt_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 824D97AF1F7A2AC200E84D4C /* dirt_01.jpg */; };
@@ -47,7 +46,6 @@
 		824D97B11F7A2AC200E84D4C /* terrain_01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = terrain_01.jpg; sourceTree = "<group>"; };
 		824D97B21F7A2B9A00E84D4C /* Terrain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Terrain.h; sourceTree = "<group>"; };
 		824D97B31F7A2B9A00E84D4C /* Terrain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Terrain.m; sourceTree = "<group>"; };
-		826B15761F7B475B00FA9E48 /* fragment_terrain.glsl */ = {isa = PBXFileReference; lastKnownFileType = text; path = fragment_terrain.glsl; sourceTree = "<group>"; };
 		827119E41F6A1B000099DE97 /* GLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLObject.h; sourceTree = "<group>"; };
 		827119E51F6A1B000099DE97 /* GLObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLObject.m; sourceTree = "<group>"; };
 		82D5BE451F67BA2100EB68DE /* GLContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLContext.h; sourceTree = "<group>"; };
@@ -108,7 +106,6 @@
 				824D97B01F7A2AC200E84D4C /* grass_01.jpg */,
 				824D97B11F7A2AC200E84D4C /* terrain_01.jpg */,
 				821F2E981F666ED0009A5B5E /* texture.jpg */,
-				826B15761F7B475B00FA9E48 /* fragment_terrain.glsl */,
 				821F2E941F666E0C009A5B5E /* fragment.glsl */,
 				821F2E951F666E0C009A5B5E /* vertex.glsl */,
 				821F2E891F666D28009A5B5E /* Assets.xcassets */,
@@ -208,7 +205,6 @@
 				821F2E8E1F666D28009A5B5E /* LaunchScreen.storyboard in Resources */,
 				821F2E8F1F666D28009A5B5E /* Main.storyboard in Resources */,
 				821F2E971F666E0C009A5B5E /* vertex.glsl in Resources */,
-				826B15771F7B475B00FA9E48 /* fragment_terrain.glsl in Resources */,
 				826B15781F7B4A1E00FA9E48 /* terrain_01.jpg in Resources */,
 				821F2E921F666D28009A5B5E /* Assets.xcassets in Resources */,
 				821F2E901F666D28009A5B5E /* Info.plist in Resources */,
